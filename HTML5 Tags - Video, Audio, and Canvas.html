@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>HTML5 Tags - Video, Audio, and Canvas</title>
+</head>
+<body>
+<!--Nothing crazy special here, just a song I like-->
+	<audio controls>
+	<source src="C:\Users\user\Music\Amazon Music\Avenged Sevenfold\City of Evil\-01- Beast and the Harlot.mp3" type="audio/mpeg">
+</audio>
+
+<br>
+<!--Simple Canvas Element with no border-->
+<canvas id="myDrawing" width="300" height="200"></canvas>
+<!--Take simple element, add drawing-->
+<script type="text/javascript">
+var canvas = document.getElementById("myDrawing")
+var ctx = canvas.getContext("2d")
+// This draws a line from one point to another using coordinates. It's a pretty meaningless line, but it illustrates the point.
+ctx.moveTo(0, 0)
+ctx.lineTo(75, 10)
+ctx.lineTo(90, 120)
+ctx.lineTo(60, 150)
+ctx.lineTo(190, 180)
+ctx.lineTo(275, 200)
+ctx.lineTo(300, 0)
+ctx.stroke()
+</script>
+
+<br>
+
+<!--Video tagged video-->
+<video width="560" height="315" controls>
+	<source src="C:\Users\user\Downloads\Ragnar.mp4" type="video/mp4">
+</video>
+<br>
+<!--Youtube embedded video-->
+<iframe width="560" height="315" src="https://www.youtube.com/embed/xqYgXItqP_A" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+</body>
+</html>

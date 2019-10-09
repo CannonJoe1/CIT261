@@ -1,0 +1,116 @@
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <title>JSON Demo -- Joe Cannon</title>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+</head>
+
+<body>
+    <header>
+        <h2>JSON Data rendered into, and read from a JavaScript table</h2>
+        <h3>Parse data by pressing "Parse JSON string" button; Stringified collection by pressing "Stringify JSON" button</h3>
+    </header>
+
+        <p id="demo">In this assignment I provide two buttons to demonstrate the parsing and serialization of data with use of JSON.<br>
+                    The first is labeled, "Parse JSON string", and pressing it will run a method named "tableCreate" that will parse a static JSON string and load its contents into the table, under the appropriate header and in the correct column.<br>
+                    The other button, "Stringify JSON", will read from the table in the method, "outputString", assemble a csv string, and then stringify it so it can be written into a simple text panel.<br><br>
+
+                    The <a href="https://validator.w3.org/">W3C Markup Validation Service</a> was used to check this page's HTML. <b>Result: Document checking completed. No errors or warnings to show.</b><br><br>
+
+                    While not tested, the html5shiv.googlecode script is holding a place in the head block because the textbook recommends its use to aid in the use of out-of-date browsers.<br><br>
+
+
+
+        <button type="button" onclick="tableCreate()">Parse JSON string</button>
+        <button type="button" onclick="outputString()">Stringify JSON</button>
+
+        <br><br>
+
+        Stringified version: <input type="text" id="myText" style="width:70%" value="Press Stringify JSON button">
+
+        <script>
+
+            function tableCreate() 
+            {
+                var myJSONString = '{"cars":[{"name":"Manufacturer","models":["Fullsize","Intermediate","Compact"]},{"name":"Ford","models":["Fiesta","Focus","Mustang"]},{"name":"BMW","models":["320","X3","X5"]},{"name":"Fiat","models":["500","Panda"]}]}';
+                var myJSON = JSON.parse(myJSONString);
+
+                // this is the structure of myJSON now
+                //var myJSON = {
+                //    "cars": [{ "name": "Manufacturer", "models": ["Fullsize", "Intermediate", "Compact"] },
+                //              { "name": "Ford", "models": ["Fiesta", "Focus", "Mustang"] },
+                //              { "name": "BMW", "models": ["320", "X3", "X5"] },
+                //              { "name": "Fiat", "models": ["500", "Panda"] }]
+                //};
+
+                // this is the structure if you call JSON.stringify(myJSON);
+                // {"cars":[{"name":"Manufacturer","models":["Fullsize","Intermediate","Compact"]},{"name":"Ford","models":["Fiesta","Focus","Mustang"]},{"name":"BMW","models":["320","X3","X5"]},{"name":"Fiat","models":["500","Panda"]}]}
+
+                //body reference 
+                var body = document.getElementsByTagName("body")[0];
+
+                // create elements <table> and a <tbody>
+                var tbl = document.createElement("table");
+                var tblBody = document.createElement("tbody");
+
+                for (var i = 0; i < myJSON.cars.length; i++)
+                {
+                    var myInnerObj = myJSON.cars[i];
+
+                    // table row creation
+                    var row = document.createElement("tr");
+
+                    var rowType = "td";
+
+                    if (myInnerObj.name == "Manufacturer") 
+                    {
+                        rowType = "th";
+                    }
+
+                    var cell = document.createElement(rowType);
+                    var cellText = document.createTextNode(myInnerObj.name);
+                    cell.appendChild(cellText);
+                    row.appendChild(cell);
+                    
+                    // cells creation
+                    for (var j = 0; j < myInnerObj.models.length; j++) 
+                    {
+                        var cell = document.createElement(rowType);
+                        var cellText = document.createTextNode(myInnerObj.models[j]);
+                        cell.appendChild(cellText);
+                        row.appendChild(cell);
+                    }
+
+                    //row added to end of table body
+                    tblBody.appendChild(row);
+                }
+
+                // append the <tbody> inside the <table>
+                tbl.appendChild(tblBody);
+                // put <table> in the <body>
+                body.appendChild(tbl);
+                // tbl border attribute to 
+                tbl.setAttribute("border", "2");
+            }
+
+
+            function outputString()
+            {
+                var myJSON = {"cars": [ { "name": "Manufacturer", "models": ["Fullsize", "Intermediate", "Compact"] },
+                                        { "name": "Ford", "models": ["Fiesta", "Focus", "Mustang"] },
+                                        { "name": "BMW", "models": ["320", "X3", "X5"] },
+                                        { "name": "Fiat", "models": ["500", "Panda"] }]
+                };
+                document.getElementById("myText").value = JSON.stringify(myJSON);
+            }
+
+        </script>
+
+    </p>
+
+
+    <footer>
+        <p>© Joe Cannon, 2019</p>
+    </footer>
+
+
+</body></html>

@@ -1,0 +1,210 @@
+<html lang="en"><head>
+	<meta charset="utf-8">
+	<title>JSON/Javascript Object Demo -- Joe Cannon</title>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+</head>
+
+<body>
+	<header>
+        <h2>B. Javascript Object Creation, Inheritance, Properties, Methods, and Instantiation</h2>
+        <h2>C. JSON Parse &amp; Stringify</h2>
+        <h4>Homework 10/12/2019 -- Joe Cannon</h4>
+	</header>
+
+    <p id="P1">The <a href="https://validator.w3.org/">W3C Markup Validation Service</a> was used to check this page's HTML. <b>Result: Document checking completed. No errors or warnings to show.</b><br><br></p>
+
+		<p id="demo">JSON is a standard string format that provides a means to package data for compact storage and transmission across a network and can be converted into a class instance so its members can be accessed from an object.<br>
+					JSON syntax is string-based, requires double quotes around each item in its dot-accessed (thisObject.value) key and value pairs (those pairs also called associative arrays when []-bracket notation is used instead of dot notation), and separates the pairs with a comma.<br><br>
+                    What follows is a sequence of buttons that exercises converting and parsing Javascript strings provided in JSON syntax. The output of the parsing is modified by a instantiation method whose complexity reflects that of the data.<br><br>
+
+                    <b>Simple Javascript Object Definition:</b>The base class with which we will instantiate properties, inherit a child class, and define and use methods that handle JSON key-value pairs<br>
+                    <img src="images/productLineClass.png" alt="Base class for transportation concept"><br><br>
+
+
+                    <b>Simple Javascript string with JSON formatting:</b><br>
+		            <img src="images/simpleJSON.png" alt="Modes of transportation and colors"><br><br>
+                    <b>Example 1:</b> performs a conversion of the simpleJSON string to its compressed, stringified form.<br>
+                    <button type="button" onclick="showSimpleStringified()">Apply JSON.stringify(simpleJSON)</button>
+                    <input type="text" id="simpleStringifiedField" style="width:70%" value=""><br><br>
+
+                    <b>Example 2:</b> we'll convert the stringified string to a simple Javascript object and show the object values in the output line.<br>
+                    <button type="button" onclick="showSimpleParsed()">Apply JSON.parse(simpleJSON)</button>
+                    <input type="text" id="parsedSimpleString" style="width:70%" value=""><br><br><br><br>
+
+
+
+                    <b>Less Simple Javascript string with JSON formatting:</b><br>
+                    The slightly more complex example of JSON data presented below shows objects composed of key-value pairs, where the values are strings or arrays of strings. Note that each line's JSON object (which is also an element in a four member object array) is composed of a string:string name-value pair together with a string:string-array pair where the array bounds are denoted with square brackets. <br><br>
+                    <img src="images/complexJSON.png" alt="Modes of transportation and colors"><br><br>
+
+                    <b>Example 3:</b> Now we'll stringify the more complex JSON via a simple JSON.stringify call.<br>
+                    <button type="button" onclick="outputComplexString()">Apply JSON.stringify(complexJSON)</button>
+                    <input type="text" id="complexStringified" style="width:70%" value=""><br><br>
+        
+                    <b>Example 4:</b> we'll create a Javascript object via the JSON parse method and then access the object's members to fill a table that will more clearly inform the user about the data content.<br>
+                                  For each manufacturer, a car line object is created and instantiated that contain properties and a method<br>
+                    <button type="button" onclick="showComplex()">Apply JSON.parse(complexJSON)</button><br><br>
+                    <b>Class method output:</b>
+                    <input type="text" id="complexManufacturer" style="width:70%" value=""><br>
+                    <input type="text" id="extendedComplexManufacturer" style="width:70%" value=""><br><br>
+
+
+		<script>
+
+            // The Javascript class definition we're loading with JSON data
+		    class ProductLine 
+		    {
+                constructor(name, items)
+		        {
+		            this.manufacturer = name;
+		            this.itemList = items;
+                }
+
+		        lastManufacturer() 
+		        {
+		            return "Last manufacturer is " + this.manufacturer;
+		        }
+		    }
+
+            // the Javascript class that inherits from Product Line that we use to exercise the inheritance relationship
+            class ExtendedCar extends ProductLine
+            {
+                constructor(name, items)
+                {
+                    super(name, items);
+                }
+
+                twolastManufacturers()
+                {
+                    return "The last manufacturer twice is " + this.manufacturer + " " + this.manufacturer;
+                }
+            }
+
+            // prototype inheritance
+		    ProductLine.prototype.nationality = "United States";
+
+            // Present to a very simple presentation of a stringified simple JSON object
+		    function showSimpleStringified()
+		    {
+		        var simpleJSON = { "car": "red", "boat": "blue" };
+		        document.getElementById("simpleStringifiedField").value = JSON.stringify(simpleJSON);
+		    }
+
+
+            // Convert stringified JSON to a Javascript object from which we will read the values and write them to the output line
+		    function showSimpleParsed()
+		    {
+		        var simpleJSON = { "car": "red", "boat": "blue" };
+		        var stringifiedJSON = JSON.stringify(simpleJSON);
+		        var parsedSimpleJSON = JSON.parse(stringifiedJSON)
+		        document.getElementById("parsedSimpleString").value = "parsedSimpleJSON.car = " + parsedSimpleJSON.car + "; parsedSimpleJSON.boat = " + parsedSimpleJSON.boat;
+		    }
+
+
+
+            // output the stringified version of the complex JSON-formatted Javascript string to the UI
+		    function outputComplexString()
+			{
+			    var complexJSON = {"cars": [{ "name": "Manufacturer", "models": ["Fullsize", "Intermediate", "Compact"] },
+                                            { "name": "Ford", "models": ["Fiesta", "Focus", "Mustang"] },
+                                            { "name": "BMW", "models": ["320", "X3", "X5"] },
+                                            { "name": "Fiat", "models": ["500", "Panda"] }]  };
+
+			    document.getElementById("complexStringified").value = JSON.stringify(complexJSON);
+			}
+
+
+
+		    // stringify and then parse the complex JSON-formatted Javascript string into a Javascript object
+            // from which we can pull, format, and display data values
+		    function showComplex()
+		    {
+                // JSON formatted Javascript object
+		        var complexJSON = {"cars": [{ "name": "Manufacturer", "models": ["Fullsize", "Intermediate", "Compact"] },
+                                            { "name": "Ford", "models": ["Fiesta", "Focus", "Mustang"] },
+                                            { "name": "BMW", "models": ["320", "X3", "X5"] },
+                                            { "name": "Fiat", "models": ["500", "Panda"] }] };
+
+		        var aaExample = "name"; // just here to show use of associative array notation
+
+                // Example of an object function -- a method defined for the complexJSON class object
+		        //complexJSON.getName = function ()
+		        //{
+		        //    return this.name;
+		        //};
+
+		        var myJSONString = JSON.stringify(complexJSON); // creation of stringified JSON string
+		        var myJSON = JSON.parse(myJSONString);          // creation of Javascript object
+
+		        // this is the structure if you call JSON.stringify(myJSON);
+		        // {"cars":[{"name":"Manufacturer","models":["Fullsize","Intermediate","Compact"]},{"name":"Ford","models":["Fiesta","Focus","Mustang"]},{"name":"BMW","models":["320","X3","X5"]},{"name":"Fiat","models":["500","Panda"]}]}
+
+		        //body reference 
+		        var body = document.getElementsByTagName("body")[0];
+
+		        // create elements <table> and a <tbody>
+		        var tbl = document.createElement("table");
+		        var tblBody = document.createElement("tbody");
+
+		        for (var i = 0; i < myJSON.cars.length; i++)
+		        {
+		            var carLine = new ProductLine(myJSON.cars[i].name, myJSON.cars[i].models);
+		            var doubleCarLine = new ExtendedCar(myJSON.cars[i].name, myJSON.cars[i].models);
+
+		            document.getElementById("complexManufacturer").value = carLine.lastManufacturer();
+		            document.getElementById("extendedComplexManufacturer").value = doubleCarLine.twolastManufacturers();
+
+		            // table row creation
+		            var row = document.createElement("tr");
+		            var rowType = "td";
+
+                    // example of associative array notation that is not live in this demo
+		            //if (carLine[aaExample] == "Manufacturer")
+		            //{
+		            //    rowType = "th";
+		            //}
+
+		            if (carLine.manufacturer == "Manufacturer")
+		            {
+		                rowType = "th";
+		            }
+
+		            // use of a ComplexJSON object method -- used here rather than class function
+		            //if (complexJSON.getName() == "Manufacturer")
+		            //{
+		            //    rowType = "th";
+		            //}
+
+		            var cell = document.createElement(rowType);
+		            var cellText = document.createTextNode(carLine.manufacturer);
+		            cell.appendChild(cellText);
+		            row.appendChild(cell);
+
+		            // cells creation
+		            for (var j = 0; j < carLine.itemList.length; j++)
+		            {
+		                var cell = document.createElement(rowType);
+		                var cellText = document.createTextNode(carLine.itemList[j]);
+		                cell.appendChild(cellText);
+		                row.appendChild(cell);
+		            }
+
+		            //row added to end of table body
+		            tblBody.appendChild(row);
+		        }
+
+		        // append the <tbody> inside the <table>
+		        tbl.appendChild(tblBody);
+		        // put <table> in the <body>
+		        body.appendChild(tbl);
+		        // tbl border attribute to 
+		        tbl.setAttribute("border", "2");
+		    }
+		</script>
+
+    </p>
+
+
+
+
+</body></html>

@@ -1,0 +1,244 @@
+<html lang="en"><head>
+	<meta charset="utf-8">
+	<title>Mobile Programming -- Joe Cannon</title>
+	<link rel="shortcut icon" href="images/favicon.ico">
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+</head>
+
+<body>
+	<header>
+		<h3>Loops, Conditional Statements, Functions, Variables, Parameters, Arrays, Associative Arrays</h3>
+	</header>
+    <h3>Values Rendered From Javascript Loops</h3>
+
+    <p id="demo">The <a href="https://validator.w3.org/">W3C Markup Validation Service</a> was used to check this page's HTML. <b>Result: Document checking completed. No errors or warnings to show.</b><br><br></p>
+
+    <table>
+        <tbody><tr>
+            <td>
+                Draw strings using random starting points, directions, and lengths. Embedded, range-terminated for-loops, if and if-else conditional<br>
+                <button type="button" onclick="showForLoop()">Random lines</button>
+                <br><br>
+                Draw car names to canvas that are read in a for-of loop from a string array<br>
+                <button type="button" onclick="showForOfLoop()">Automobile manufacturers</button>
+                <br><br>
+                Draw car names to canvas that are read in a for-of loop from an associative string array<br>
+                <button type="button" onclick="showAssociativeArrayForOfLoop()">Associative manufacturers</button>
+                <br><br>
+                Draw numbers accessed via use of a for-each loop from an integer array that came to the handler as an argument-parameter<br>
+                <button type="button" onclick="showForEachLoop(myArr)">Small numbers</button>
+                <br><br>
+                Read members of an instance of a Javascript object via a for-in loop<br>
+                <button type="button" onclick="showForInLoop()">Object members</button>
+                <br><br>
+                Repeat writing the numeral 10 to ever-increasing distances between canvas locations using a while-loop<br>
+                <button type="button" onclick="showWhileLoop()">Spreading tens</button>
+                <br><br>
+                Stack a set of number values on the canvas that increase inside a do-loop<br>
+                <button type="button" onclick="showDoWhileLoop()">Larger numbers</button>
+                <br><br>
+            </td>
+            <td>
+                <!--Simple Canvas Element with no border-->
+                <canvas id="parabola" width="400" height="400"></canvas>;
+
+                <script>
+
+                    // the UI control we'll use to show the output
+                    var canvasp = document.getElementById("parabola");
+                    var ctp = canvasp.getContext("2d");
+                    ctp.moveTo(200, 200);
+                    ctp.font = "24px Arial";
+
+                    var myArr = [1, 2, 3, 4];
+
+                </script>
+            </td>
+        </tr>
+    </tbody></table>
+
+    <script>
+
+
+        // Draw strings using random starting points, directions, and lengths. Embedded, range-terminated for-loops, if and if-else conditional
+        function showForLoop()
+        {
+            var canvasp = document.getElementById("parabola");
+            var ctp = canvasp.getContext("2d");
+            ctp.moveTo(200, 200);
+            var lastX = 25;
+            var lastY = 25;
+
+            var i;
+            for (i = 0; i < 15; i++)
+            {
+                for (j=0; j<40; j++)
+                {
+                    // if-then-else
+                    if (j === 3)
+                    {
+                        continue;   // this is here only to show how we can skip evaluating the 3 value
+                    }
+                    else if (j==5)
+                    {
+                        for (k=-5; k<6; k++)
+                        {
+                            var yValue = k*k;
+                            ctp.lineTo(k, yValue);
+                        }
+                    }
+                    else
+                    {
+                        var randomValue = Math.floor((Math.random()*400)+1)*10;
+                        ctp.lineTo(lastX, lastY);
+                        lastX = randomValue;
+                        lastY = randomValue*randomValue;
+                    }
+                }
+            }
+
+            ctp.stroke();
+        }
+
+
+        // Draw car names to canvas that are read in a for-of loop from a string array
+        function showForOfLoop()
+        {
+            var canvasp = document.getElementById("parabola");
+            var ctp = canvasp.getContext("2d");
+            ctp.moveTo(200, 200);
+            ctp.font = "16px Arial";
+
+            var cars = ['Ford', 'Chevrolet', 'Dodge', 'Mercedes', 'Porsche', 'Audi', 'Lotus', 'Jaguar', 'Land Rover', 'Bentley', 'BMW', 'Volvo', 'Mini'];
+            var x;
+
+            var x = 2;
+            var y= 20;
+
+            for (c of cars) 
+            {
+                ctp.fillText(c, x, y);
+                x = x+30;
+                y=y+25;
+            }
+
+            ctp.stroke();
+        }
+
+
+        // Draw car names to canvas that are read in a for-of loop from an associative string array
+        function showAssociativeArrayForOfLoop()
+        {
+            var canvasp = document.getElementById("parabola");
+            var ctp = canvasp.getContext("2d");
+            ctp.moveTo(200, 200);
+            ctp.font = "16px Arial";
+
+            var cars = ['Ford', 'Chevrolet', 'Dodge', 'Mercedes', 'Porsche', 'Audi', 'Lotus', 'Jaguar', 'Land Rover', 'Bentley', 'BMW', 'Volvo', 'Mini'];
+            var x;
+
+            var x = 105;
+            var y = 20;
+            var c = 0;
+
+            for (c=0; c<13; c++)
+            {
+                ctp.fillText(cars[c], x, y);
+                x = x+30;
+                y=y+25;
+            }
+
+            ctp.stroke();
+        }
+
+        var q = 250;
+        var r=20;
+
+        // Draw numbers accessed via use of a for-each loop from an integer array that came to the handler as an argument-parameter
+        function showForEachLoop(myArr)
+        {
+            myArr.forEach(intOut)
+            {
+            }
+        }
+
+        // function with arguments/parameters
+        function intOut(item, index) 
+        {
+            ctp.fillText(item, q, r);
+            r = r+20;
+        }
+
+        // Read members of an instance of a Javascript object via a for-in loop
+        function showForInLoop()
+        {
+            var person = { fname: "Joe", lname: "Eliot", age: 137 };
+            var p;
+
+            var currentX = 325;
+            var currentY = 25;
+
+            for (p in person) 
+            {
+                ctp.fillText(person[p], currentX, currentY);
+                currentY = currentY + 25;
+            }
+
+            ctp.stroke();
+        }
+
+
+        // repeat writing the numeral 10 to ever-increasing distances between canvas locations
+        function showWhileLoop()
+        {
+            var i=1;
+            var seedValue = 10;
+
+            while (i < 100) 
+            {
+                ctp.fillText(seedValue, i, i*i*i);
+                i++;
+            }
+
+            ctp.stroke();
+        }
+
+
+
+        function showDoWhileLoop()
+        {
+            var currentX = 340;
+            var currentY = 130;
+            var seedValue = 200;
+
+            do
+            {
+                ctp.fillText(seedValue, currentX, currentY);
+                seedValue = seedValue + 100;
+                currentY = currentY + 25;
+            }
+            while (currentY<250);
+
+            ctp.stroke();
+        }
+
+        // switch
+
+        // Variables
+
+        // Parameters
+
+        // Arrays
+
+        // Associative Arrays
+
+        // Using XMLHTTPRequest to Consume a JSON Web Service
+
+    </script>
+
+	<footer>
+		<p>© 2019, Joe Cannon</p>
+	</footer>
+
+
+</body></html>

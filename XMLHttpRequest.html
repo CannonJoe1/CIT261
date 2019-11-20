@@ -1,0 +1,106 @@
+<html lang="en"><head>
+	<meta charset="utf-8">
+	<title>Mobile Programming -- Joe Cannon</title>
+	<link rel="stylesheet" href="styles/normalize.css">
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+</head>
+
+<body>
+	<header>
+		<h3>XMLHttpRequest</h3>
+	</header>
+    <h4>Consuming a JSON Web Service via XMLHttpRequest</h4>
+
+
+    <table>
+        <tbody><tr>
+            <td width="40%">
+                In this example we create and open an XMLHttpRequest object, with which we asynchronously open a local text file whose content is used to create a JSON object.
+                We loop through the JSON object and output the list of this semester’s homework assignments you see on the right.<br><br>
+				XMLHttpRequest (currently to me) appears to be intended as a way to open and access a file stored within the loaded javascript’s domain, and 
+				disallow open and read access outside of that domain.<br><br>
+                The steps we execute are:<br><br>
+                <ul>
+                    <li>Create  the XMLHttpRequest object</li>
+                    <li>Specify the name of the JSON file url that will be accessed by the http request.</li>
+                    <li>Send the request to the server for the file contents</li>
+                    <li>When the app is in the state in which the file has been received the XMLHttpRequest object’s onreadystatechange method is fired</li>
+                    <li>Once inside the onreadystatechange method handler, the JSON is parsed into an object and then written from the object to the string output seen as the URL list seen on the right. (FYI: sometimes, for an unknown reason that list doesn't show up as expected -- usually on a Tuesday when it rains ;-) )</li>
+                </ul>
+            </td>
+            <td>
+                <div id="tableRightCell"><a href="https://www.neckbats.com/Fall2019/Assn1">HTML5 Tags - Video, Audio, and Canvas</a><br><a href="https://www.neckbats.com/Fall2019/Assn2">JSON Parse, Stringify</a><br><a href="https://www.neckbats.com/Fall2019/Assn2">Object Creation Functions, Inheritance, Properties, Methods, Instantiation</a><br><a href="https://www.neckbats.com/Fall2019/Assn3">Loops, Conditional Statements, Functions, Variables, Parameters, Arrays, Associative Arrays</a><br><a href="https://www.neckbats.com/Fall2019/Assn4"> Using XMLHTTPRequest to Consume a JSON Web Service</a><br><a href="https://www.neckbats.com/Fall2019/Assn5">Local Storage API, Storing and Retrieving Simple Data, Arrays, JSON Associative Arrays, and Objects</a><br><a href="https://www.neckbats.com/Fall2019/Assn6">DOM Manipulation Using createElement, appendChild, insertBefore, removeChild, etc.</a><br><a href="https://www.neckbats.com/Fall2019/Assn7">Manipulating CSS Class Properties Using JavaScript</a><br><a href="https://www.neckbats.com/Fall2019/Assn8">Creating CSS3 Transitions and Animations in CSS and triggering them with JavaScript</a><br><a href="https://www.neckbats.com/Fall2019/Assn9">Standard JavaScript Events Including those for Mobile Devices and Animation and Transition Events</a><br><a href="https://www.neckbats.com/Fall2019/Assn10">Designing, Defining, and Triggering CSS3 Transitions without Custom Libraries (Thought Library)</a><br><a href="https://www.neckbats.com/Fall2019/Assn11"> Designing, Defining, and Triggering CSS3 Transforms without Custom Libraries (Thought Library)</a><br><a href="https://www.neckbats.com/Fall2019/Assn12">Designing, Defining, and Triggering CSS3 Animations without Custom Libraries (Thought Library)</a><br></div>
+            </td>
+        </tr>
+    </tbody></table>
+
+    <script>
+        // create new XMLHttpRequest object
+        var xmlhttp = new XMLHttpRequest();
+        // specify the target for the request -- in the context of the open call, noteworthy that it's not http
+        var url = "myTutorials.txt";
+
+        // 1. the implementation of the onreadystatechange event handler, which is asynchronously 
+        // called when the browser's ready state changes. When triggered, the text from the url 
+        // datafile is JSON-parsed with the resulting array delivered to the myFunction action
+
+        // 2. readyState == 4 means the XMLHttpRequest operation is done -- data transfer is completed
+        // status == 200 means loading. In combination with the readyState == 4, the combination of the 
+        //               state and status meanss we're good to move on to the steps inside the 
+        //               conditional == true block
+        // From: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/readyState
+
+        xmlhttp.onreadystatechange = function ()
+        {
+            if (this.readyState == 4 && this.status == 200)
+            {
+                var myArr = JSON.parse(this.responseText);
+                myFunction(myArr);
+            }
+            else
+            {
+                //document.getElementById("tableRightCell").innerHTML = "Ready " + this.readyState + " " + this.status;
+                xmlhttp.send();
+            }
+        };
+
+        // Opens the request to the server
+        // GET method is ignored when not an http(s) HTTPRequest
+        // url is certainly not an http(s) HTTPRequest
+        // true indicates asynchronous operation -- play with this to see if differences occur. 
+        //      Documentation outright promises there will be noticeable disruptions and therefore 
+        //      the browser probably has deprecated synchronous
+        // From: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/open
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send(null);
+
+        // Sends the opened request to the server -- I suppose that because the open command states
+        //                                           it is to open in asynch mode it might not have 
+        //                                           returned before this next send call is made
+        // optional body argument is not used here, one, because it will be ignored for a GET request
+        // From: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/send
+        //xmlhttp.send();
+
+
+        // reads the string array and outputs some good looking HTML to the tableRightCell div element, which
+        // is the right cell of a table in this implementation
+        function myFunction(arr)
+        {
+            var out = "";
+            var i;
+            for (i = 0; i < arr.length; i++)
+            {
+                out += '<a href="' + arr[i].url + '">' +
+                arr[i].display + '</a><br>';
+            }
+            document.getElementById("tableRightCell").innerHTML = out;
+        }
+    </script>
+
+	<footer>
+		<p class="leftward"><a href="https://www.neckbats.com/Fall2019/Assn3/">Previous: Loops, Conditional Statements, Functions, Variables, Parameters, Arrays, Associative Arrays</a>&nbsp;&nbsp;&nbsp;<a class="rightward" href="http://www.neckbats.com/Fall2019/Assn5/">Next: Local Storage API, Storing and Retrieving Simple Data, Arrays, Associative Arrays, and Objects</a></p>
+        <p class="leftward">© 2019, Joe Cannon</p>  
+	</footer>
+
+
+<iframe id="mc-sidebar-container" style="top: 0px; padding: 0px; margin: 0px; z-index: 2147483646; position: fixed; border: none; opacity: 0; left: auto; right: 0px; display: block; max-width: none; transition: width 0s ease 0.4s, height 0s ease 0.4s, opacity 0.4s ease 0s, transform 0.4s ease 0s; transform: translate3d(400px, 0px, 0px); width: 400px; height: 0px;"></iframe><iframe id="mc-topbar-container" style="top: 0px; padding: 0px; margin: 0px; z-index: 2147483646; position: fixed; border: none; opacity: 0; left: 0px; display: block; max-height: none; transition: width 0s ease 0.4s, height 0s ease 0.4s, opacity 0.4s ease 0s, transform 0.4s ease 0s; transform: translate3d(0px, -50px, 0px); height: 50px; width: 0px;"></iframe><iframe id="mc-toast-container" style="bottom: 0px; right: 0px; padding: 0px; margin: 0px; z-index: 2147483640; position: fixed; border: none; opacity: 0; display: block; height: 0px; width: 0px;"></iframe><iframe id="mc-download-overlay-container" style="bottom: 0px; right: 0px; padding: 0px; margin: 0px; z-index: 2147483640; position: fixed; border: none; opacity: 0; display: block; height: 0px; width: 0px;"></iframe></body></html>
